@@ -53,4 +53,16 @@ describe("QueryProcessor", () => {
         const response: string = QueryProcessor(query);
         expect(response).toBe("96");
     })
+
+    test('should multiply two numbers', () => {
+        const query = "What is 77 multiplied by 71?";
+        const response: string = QueryProcessor(query);
+        expect(response).toBe("5467");
+    })
+
+    test('should find numbers that are both square and cube', () => {
+        const query = "Which of the following numbers is both a square and a cube: 3969, 1, 4635, 2187, 4052, 64, 1316?";
+        const response: string = QueryProcessor(query);
+        expect(response).toBe("1, 64");
+    })
 });
