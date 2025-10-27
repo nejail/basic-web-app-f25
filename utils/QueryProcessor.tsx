@@ -26,11 +26,15 @@ export default function QueryProcessor(query: string): string {
     return product.toString();
   }
 
-  const additionMatch = query.match(/what is (\-?\d+) plus (\-?\d+)/i);
-  if (additionMatch) {
-    const [, firstNumber, secondNumber] = additionMatch;
-    const sum = parseInt(firstNumber, 10) + parseInt(secondNumber, 10);
-    return sum.toString();
+  if (/what is .*plus/i.test(lowerQuery)) {
+    const numbers = query.match(/-?\d+/g);
+    if (numbers && numbers.length >= 2) {
+      const sum = numbers.reduce(
+        (total, value) => total + parseInt(value, 10),
+        0
+      );
+      return sum.toString();
+    }
   }
 
   const subtractionMatch = query.match(/what is (\-?\d+)\s*minus\s*(\-?\d+)/i);
@@ -49,6 +53,15 @@ export default function QueryProcessor(query: string): string {
     }
     const quotient = parseInt(firstNumber, 10) / divisor;
     return quotient.toString();
+  }
+
+  const powerMatch = query.match(
+    /what is (\-?\d+)\s*(?:to the power of|power of|raised to(?: the power of)?)\s*(\-?\d+)/i
+  );
+  if (powerMatch) {
+    const [, baseValue, exponentValue] = powerMatch;
+    const result = Math.pow(parseInt(baseValue, 10), parseInt(exponentValue, 10));
+    return result.toString();
   }
 
   const largestMatch = query.match(/largest:(.*)/i);
