@@ -60,7 +60,21 @@ export default function QueryProcessor(query: string): string {
   );
   if (powerMatch) {
     const [, baseValue, exponentValue] = powerMatch;
-    const result = Math.pow(parseInt(baseValue, 10), parseInt(exponentValue, 10));
+    const exponent = BigInt(exponentValue);
+    if (exponent < 0n) {
+      return "Cannot raise to a negative power";
+    }
+    const base = BigInt(baseValue);
+    let result = 1n;
+    let current = base;
+    let remaining = exponent;
+    while (remaining > 0n) {
+      if (remaining % 2n === 1n) {
+        result *= current;
+      }
+      current *= current;
+      remaining /= 2n;
+    }
     return result.toString();
   }
 
