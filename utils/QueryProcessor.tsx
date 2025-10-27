@@ -43,7 +43,7 @@ export default function QueryProcessor(query: string): string {
     }
   }
 
-  const squareCubeMatch = query.match(/square and (?:a )?cube:(.*)/i);
+  const squareCubeMatch = query.match(/square[^:]*cube\s*:(.*)/i);
   if (squareCubeMatch) {
     const numbers = extractNumbers(squareCubeMatch[1]);
     const perfectSixths = numbers.filter((value) => {

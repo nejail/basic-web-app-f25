@@ -65,4 +65,10 @@ describe("QueryProcessor", () => {
         const response: string = QueryProcessor(query);
         expect(response).toBe("1, 64");
     })
+
+    test('should handle alternate square and cube phrasing', () => {
+        const query = "Which of the following numbers is both a square and a cube: 1739, 3249, 64, 157, 2351, 4096, 599?";
+        const response: string = QueryProcessor(query);
+        expect(response).toBe("64, 4096");
+    })
 });
