@@ -60,6 +60,18 @@ describe("QueryProcessor", () => {
         expect(response).toBe("5467");
     })
 
+    test('should subtract two numbers', () => {
+        const query = "What is 77 minus 71?";
+        const response: string = QueryProcessor(query);
+        expect(response).toBe("6");
+    })
+
+    test('should divide two numbers', () => {
+        const query = "What is 144 divided by 12?";
+        const response: string = QueryProcessor(query);
+        expect(response).toBe("12");
+    })
+
     test('should find numbers that are both square and cube', () => {
         const query = "Which of the following numbers is both a square and a cube: 3969, 1, 4635, 2187, 4052, 64, 1316?";
         const response: string = QueryProcessor(query);
@@ -70,5 +82,11 @@ describe("QueryProcessor", () => {
         const query = "Which of the following numbers is both a square and a cube: 1739, 3249, 64, 157, 2351, 4096, 599?";
         const response: string = QueryProcessor(query);
         expect(response).toBe("64, 4096");
+    })
+
+    test('should find square and cube numbers without colon', () => {
+        const query = "Which of the following numbers is both a square and a cube 3202, 1951, 1, 474, 3262, 64, 1369?";
+        const response: string = QueryProcessor(query);
+        expect(response).toBe("1, 64");
     })
 });

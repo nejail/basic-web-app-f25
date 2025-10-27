@@ -33,6 +33,24 @@ export default function QueryProcessor(query: string): string {
     return sum.toString();
   }
 
+  const subtractionMatch = query.match(/what is (\-?\d+)\s*minus\s*(\-?\d+)/i);
+  if (subtractionMatch) {
+    const [, firstNumber, secondNumber] = subtractionMatch;
+    const difference = parseInt(firstNumber, 10) - parseInt(secondNumber, 10);
+    return difference.toString();
+  }
+
+  const divisionMatch = query.match(/what is (\-?\d+)\s*(?:divided by|over)\s*(\-?\d+)/i);
+  if (divisionMatch) {
+    const [, firstNumber, secondNumber] = divisionMatch;
+    const divisor = parseInt(secondNumber, 10);
+    if (divisor === 0) {
+      return "Cannot divide by zero";
+    }
+    const quotient = parseInt(firstNumber, 10) / divisor;
+    return quotient.toString();
+  }
+
   const largestMatch = query.match(/largest:(.*)/i);
   if (largestMatch) {
     const numbers = extractNumbers(largestMatch[1]);
@@ -43,9 +61,16 @@ export default function QueryProcessor(query: string): string {
     }
   }
 
-  const squareCubeMatch = query.match(/square[^:]*cube\s*:(.*)/i);
-  if (squareCubeMatch) {
-    const numbers = extractNumbers(squareCubeMatch[1]);
+  const squareCubeMatch = query.match(/square[^:]*cube(?:\s*:)?(.*)/i);
+  const squareCubeSource =
+    squareCubeMatch && squareCubeMatch[1] !== ""
+      ? squareCubeMatch[1]
+      : lowerQuery.includes("square") && lowerQuery.includes("cube")
+      ? query
+      : null;
+
+  if (squareCubeSource) {
+    const numbers = extractNumbers(squareCubeSource);
     const perfectSixths = numbers.filter((value) => {
       if (value < 0) {
         return false;
