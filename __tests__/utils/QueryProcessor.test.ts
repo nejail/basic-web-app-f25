@@ -41,4 +41,16 @@ describe("QueryProcessor", () => {
             "nejail"
           ));
     })
+
+    test('should add two numbers', () => {
+        const query = "What is 9 plus 47?";
+        const response: string = QueryProcessor(query);
+        expect(response).toBe("56");
+    })
+
+    test('should find largest number from list', () => {
+        const query = "Which of the following numbers is the largest: 79, 50, 96?";
+        const response: string = QueryProcessor(query);
+        expect(response).toBe("96");
+    })
 });
