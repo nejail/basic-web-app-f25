@@ -84,6 +84,39 @@ export default function QueryProcessor(query: string): string {
     }
   }
 
+  const isPrime = (value: number) => {
+    if (value <= 1 || !Number.isInteger(value)) {
+      return false;
+    }
+    if (value === 2) {
+      return true;
+    }
+    if (value % 2 === 0) {
+      return false;
+    }
+    const limit = Math.floor(Math.sqrt(value));
+    for (let divisor = 3; divisor <= limit; divisor += 2) {
+      if (value % divisor === 0) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  if (lowerQuery.includes("prime")) {
+    const primeMatch = query.match(/prime[^:]*:(.*)/i);
+    const primeSource =
+      primeMatch && primeMatch[1] !== ""
+        ? primeMatch[1]
+        : query;
+    const numbers = extractNumbers(primeSource);
+    const primes = numbers.filter(isPrime);
+
+    if (primes.length > 0) {
+      return primes.join(", ");
+    }
+  }
+
   if (lowerQuery.includes("name")) {
     return "Nasser";
   }
